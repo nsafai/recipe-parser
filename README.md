@@ -5,9 +5,10 @@ Natural language parser for recipes and lists of ingredients. Can parse a string
 This project was built on top of code written by [mackenziefernandez](https://github.com/mackenziefernandez/recipe-parser). 
 
 What's different from the original? 
-- this project contains some extra units (including units like `large`, `pinch`, etc.).
-- this project assumes that any clarifications in an ingredient (in parentheses), should be placed at the end of the ingredient, not at the beginning, which is better for anyone that is sorting their ingredients.
-- this project will *eventually* handle combining multiple ingredients with different units (for example, combining `45 mL milk` and `6 cups milk`)
+- contains some extra units (including units like `large`, `pinch`, etc.).
+- can parse and combine ingredients that have a quatity range (for example '1-2 eggs')
+- assumes that any clarifications in an ingredient (in parentheses), should be placed at the end of the ingredient, not at the beginning. For example "1-2 eggs (brown eggs preferrably)" instead of "1-2 (brown eggs preferrably) eggs"
+- will *eventually* handle combining  with different units (for example, combining `45 mL milk` and `6 cups milk`)
 
 ## To install
 `npm install recipe-ingredient-parser-v2` or `yarn add recipe-ingredient-parser-v2`
@@ -23,7 +24,9 @@ Will return an object:
 {
   quantity: 1,
   unit: 'teaspoon',
-  ingredient: 'basil'
+  ingredient: 'basil',
+  minQty: 1,
+  maxQty: 1
 };
 ```
 
@@ -32,21 +35,27 @@ Will return an object:
 combine([{
   quantity: 1,
   unit: 'teaspoon',
-  ingredient: 'basil'
+  ingredient: 'basil',
+  minQty: 1,
+  maxQty: 2,
 },
 {
-  quantity: 1,
+  quantity: 2,
   unit: 'teaspoon',
-  ingredient: 'basil'
+  ingredient: 'basil',
+  minQty: 2,
+  maxQty: 2
 }]);
 ```
 
 Will return
 ```
 [{
-  quantity: 2,
+  quantity: 3,
   unit: 'teaspoon',
-  ingredient: 'basil'
+  ingredient: 'basil',
+  minQty: 3,
+  maxQty: 4
 }]
 ```
 
