@@ -82,6 +82,7 @@ export function combine(ingredientArray: Ingredient[]) {
       return Object.assign(acc, { [key]: ingredient });
     }
   }, {} as { [key: string]: Ingredient });
+  console.log("Test");
 
   return Object.keys(combinedIngredients).reduce((acc, key) => {
     const ingredient = combinedIngredients[key];
