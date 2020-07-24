@@ -35,7 +35,7 @@
   "dependencies": {
     "@types/natural": "^0.2.33",
     "@types/node": "^10.5.1",
-    "natural": "^0.6.1"
+    "natural": "^2.1.5"
   },
   "keywords": [
     "recipe",
