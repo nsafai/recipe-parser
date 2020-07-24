@@ -8,7 +8,7 @@ export function convertFromFraction(value: string) {
       const wholeAndFraction = parseInt(whole) ? parseInt(whole) + remainder : remainder;
       return keepThreeDecimals(wholeAndFraction);
     } else {
-      return parseInt(whole)
+      return keepThreeDecimals(parseInt(whole))
     }
   } else if (!value || value.split('-').length > 1) {
     return value;
