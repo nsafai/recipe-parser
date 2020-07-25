@@ -3,9 +3,13 @@ export function convertFromFraction(value: string) {
   if (value && value.split(' ').length > 1) {
     const [whole, fraction] = value.split(' ');
     const [a, b] = fraction.split('/');
-    const remainder = parseFloat(a) / parseFloat(b);
-    const wholeAndFraction = parseInt(whole) ? parseInt(whole) + remainder : remainder;
-    return keepThreeDecimals(wholeAndFraction);
+    if (b) {
+      const remainder = parseFloat(a) / parseFloat(b);
+      const wholeAndFraction = parseInt(whole) ? parseInt(whole) + remainder : remainder;
+      return keepThreeDecimals(wholeAndFraction);
+    } else {
+      return keepThreeDecimals(parseInt(whole))
+    }
   } else if (!value || value.split('-').length > 1) {
     return value;
   } else {

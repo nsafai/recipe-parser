@@ -39,7 +39,7 @@ export function parse(recipeString: string) {
   For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
   let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
-  quantity = convert.convertFromFraction(quantity);
+  quantity = convert.convertFromFraction(quantity).toString();
 
   /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
