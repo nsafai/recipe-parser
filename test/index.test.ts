@@ -239,6 +239,26 @@ describe('recipe parser', () => {
     });
   });
 
+  it('doesn\'t explode when 1 14.5 oz tomato', () => {
+    expect(parse('1 14.5 oz tomato')).to.deep.equal({
+      unit: '14.5 ounce',
+      ingredient: 'tomato',
+      quantity: '1',
+      minQty: '1',
+      maxQty: '1'
+    });
+  });
+
+  it('properly parses 1-2 14.5 oz can tomato paste', () => {
+    expect(parse('1-2 14.5 oz can tomato paste')).to.deep.equal({
+      quantity: '1-2',
+      unit: '14.5 ounce',
+      ingredient: 'can tomato paste',
+      minQty: '1',
+      maxQty: '2'
+    });
+  });
+
   describe('translates the abbreviated units of', () => {
     it('"1 cup water"', () => {
       expect(parse('1 c water').unit).to.equal('cup');

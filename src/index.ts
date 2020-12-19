@@ -1,6 +1,6 @@
 import * as convert from './convert';
-import { units, pluralUnits } from './units';
-import { repeatingFractions } from './repeatingFractions';
+import {units, pluralUnits} from './units';
+import {repeatingFractions} from './repeatingFractions';
 import * as Natural from 'natural';
 
 const nounInflector = new Natural.NounInflector();
@@ -41,13 +41,14 @@ export function parse(recipeString: string) {
 
   quantity = convert.convertFromFraction(quantity);
 
-  /* when quantity includes an extra number, this means we likely have a special unit type like 12 oz can */
+  /* when quantity includes an extra number we likely have a special unit type like 12 oz. can */
   let extraUnitInfo = '';
   if (quantity && quantity.split(' ').length > 1) {
     const [amount, extra] = quantity.split(' ');
     quantity = amount;
     extraUnitInfo = extra;
   }
+
   /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
   let extraInfo;
@@ -57,9 +58,32 @@ export function parse(recipeString: string) {
   }
 
   // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
-  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[];
+  // tslint:disable-next-line:prefer-const
+  let [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[];
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
-  const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
+  let ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
+
+  /*This will take the number from the beginning and if the next word is a valid unit we will use that unit
+  * if there is a number at the beginning we do not have a unit because the unit is assumed to be at the beginning*/
+  const startsWithNumberRegex = /^\d+(\.\d+|\s+\d+\/\d+)?(\s+\w+\.?|\w+\.?\s+)/;
+  const numberWithNextWord = getFirstMatch(ingredient, startsWithNumberRegex).trim();
+  if (numberWithNextWord.split(' ').length > 1) {
+    const [tempUnit] = getUnit(numberWithNextWord.split(' ')[1]) as string[];
+    if (tempUnit) {
+      unit = tempUnit;
+      extraUnitInfo = numberWithNextWord.split(' ')[0];
+      ingredient = ingredient.replace(numberWithNextWord, '').trim();
+    }
+  } else {
+    const numberOnlyRegex = /^\d+((\.\d+)|(\s+\d+\/\d+))?/;
+    const num = getFirstMatch(numberWithNextWord, numberOnlyRegex);
+    const [tempUnit] = getUnit(numberWithNextWord.replace(num, ''));
+    if (tempUnit) {
+      unit = tempUnit;
+      extraUnitInfo = num;
+      ingredient = ingredient.replace(numberWithNextWord, '').trim();
+    }
+  }
 
   let minQty = quantity; // default to quantity
   let maxQty = quantity; // default to quantity
@@ -78,15 +102,20 @@ export function parse(recipeString: string) {
   };
 }
 
+function getFirstMatch(line: string, regex: RegExp) {
+  const match = line.match(regex);
+  return (match && match[0]) || '';
+}
+
 export function combine(ingredientArray: Ingredient[]) {
   const combinedIngredients = ingredientArray.reduce((acc, ingredient) => {
     const key = ingredient.ingredient + ingredient.unit; // when combining different units, remove this from the key and just use the name
     const existingIngredient = acc[key];
 
     if (existingIngredient) {
-      return Object.assign(acc, { [key]: combineTwoIngredients(existingIngredient, ingredient) });
+      return Object.assign(acc, {[key]: combineTwoIngredients(existingIngredient, ingredient)});
     } else {
-      return Object.assign(acc, { [key]: ingredient });
+      return Object.assign(acc, {[key]: ingredient});
     }
   }, {} as { [key: string]: Ingredient });
 
@@ -146,7 +175,7 @@ function combineTwoIngredients(existingIngredients: Ingredient, ingredient: Ingr
   const quantity = existingIngredients.quantity && ingredient.quantity ? (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString() : null;
   const minQty = existingIngredients.minQty && ingredient.minQty ? (Number(existingIngredients.minQty) + Number(ingredient.minQty)).toString() : null;
   const maxQty = existingIngredients.maxQty && ingredient.maxQty ? (Number(existingIngredients.maxQty) + Number(ingredient.maxQty)).toString() : null;
-  return Object.assign({}, existingIngredients, { quantity, minQty, maxQty });
+  return Object.assign({}, existingIngredients, {quantity, minQty, maxQty});
 }
 
 function compareIngredients(a: Ingredient, b: Ingredient) {
