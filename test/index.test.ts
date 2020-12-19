@@ -219,6 +219,26 @@ describe('recipe parser', () => {
     });
   });
 
+  it('doesn\'t explode when 1 2 lb. chicken', () => {
+    expect(parse('1 2 lb. chicken')).to.deep.equal({
+      unit: '2 pound',
+      ingredient: 'chicken',
+      quantity: '1',
+      minQty: '1',
+      maxQty: '1'
+    });
+  });
+
+  it('doesn\'t explode when 1 2lb. chicken', () => {
+    expect(parse('1 2lb. chicken')).to.deep.equal({
+      unit: '2 pound',
+      ingredient: 'chicken',
+      quantity: '1',
+      minQty: '1',
+      maxQty: '1'
+    });
+  });
+
   describe('translates the abbreviated units of', () => {
     it('"1 cup water"', () => {
       expect(parse('1 c water').unit).to.equal('cup');

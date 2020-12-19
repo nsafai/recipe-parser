@@ -1,20 +1,22 @@
 export function convertFromFraction(value: string) {
   // number comes in, for example: 1 1/3
-  if (value && value.split(' ').length > 1) {
-    const [whole, fraction] = value.split(' ');
-    const [a, b] = fraction.split('/');
-    if (b) {
+  if (value && value.includes('/')) {
+
+    if (value && value.split(' ').length > 1) {
+      const [whole, fraction] = value.split(' ');
+      const [a, b] = fraction.split('/');
       const remainder = parseFloat(a) / parseFloat(b);
       const wholeAndFraction = parseInt(whole) ? parseInt(whole) + remainder : remainder;
       return keepThreeDecimals(wholeAndFraction);
+
+    } else if (!value || value.split('-').length > 1) {
+      return value;
     } else {
-      return keepThreeDecimals(parseInt(whole));
+      const [a, b] = value.split('/');
+      return b ? keepThreeDecimals(parseFloat(a) / parseFloat(b)) : a;
     }
-  } else if (!value || value.split('-').length > 1) {
-    return value;
   } else {
-    const [a, b] = value.split('/');
-    return b ? keepThreeDecimals(parseFloat(a) / parseFloat(b)) : a;
+    return value;
   }
 }
 

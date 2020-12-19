@@ -41,6 +41,13 @@ export function parse(recipeString: string) {
 
   quantity = convert.convertFromFraction(quantity);
 
+  /* when quantity includes an extra number, this means we likely have a special unit type like 12 oz can */
+  let extraUnitInfo = '';
+  if (quantity && quantity.split(' ').length > 1) {
+    const [amount, extra] = quantity.split(' ');
+    quantity = amount;
+    extraUnitInfo = extra;
+  }
   /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
   let extraInfo;
@@ -50,7 +57,7 @@ export function parse(recipeString: string) {
   }
 
   // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
-  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[]
+  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[];
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
   const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
 
@@ -64,7 +71,7 @@ export function parse(recipeString: string) {
 
   return {
     quantity,
-    unit: !!unit ? unit : null,
+    unit: !!unit ? (!!extraUnitInfo ? extraUnitInfo + ' ' : '') + unit : null,
     ingredient: extraInfo ? `${ingredient} ${extraInfo}` : ingredient,
     minQty,
     maxQty,
