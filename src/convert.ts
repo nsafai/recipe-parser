@@ -8,7 +8,7 @@ export function convertFromFraction(value: string) {
       const wholeAndFraction = parseInt(whole) ? parseInt(whole) + remainder : remainder;
       return keepThreeDecimals(wholeAndFraction);
     } else {
-      return keepThreeDecimals(parseInt(whole))
+      return keepThreeDecimals(parseInt(whole));
     }
   } else if (!value || value.split('-').length > 1) {
     return value;
@@ -66,17 +66,11 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
     const quantity = getFirstMatch(ingredientLine, numericRangeWithSpaceRegex).replace('to', '-').split(' ').join('');
     const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericRangeWithSpaceRegex), '').trim();
     return [ingredientLine.match(numericRangeWithSpaceRegex) && quantity, restOfIngredient];
-  }
-
-  // found a numeric/fraction quantity, for example: "1 1/3"
-  else if (ingredientLine.match(numericAndFractionRegex)) {
+  } else if (ingredientLine.match(numericAndFractionRegex)) {
     const quantity = getFirstMatch(ingredientLine, numericAndFractionRegex);
-    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()
+    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim();
     return [ingredientLine.match(numericAndFractionRegex) && quantity, restOfIngredient];
-  }
-
-  // no parse-able quantity found
-  else {
+  } else {
     return [null, ingredientLine];
   }
 }
