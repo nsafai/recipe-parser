@@ -1,7 +1,6 @@
 export function convertFromFraction(value: string) {
   // number comes in, for example: 1 1/3
   if (value && value.includes('/')) {
-
     if (value && value.split(' ').length > 1) {
       const [whole, fraction] = value.split(' ');
       const [a, b] = fraction.split('/');
@@ -48,7 +47,7 @@ const unicodeObj: { [key: string]: string } = {
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   const numericAndFractionRegex = /(\d+\/\d+)|(\d+\s+\d+\/\d+)|(\d+\.\d+)|\d+/g;
-  const numericRangeWithSpaceRegex = /^(\d+\-\d+)|^(\d+\s\-\s\d+)|^(\d+\sto\s\d+)/g; // for ex: "1 to 2" or "1 - 2"
+  const numericRangeWithSpaceRegex = /^\d+((\.\d+)|(\s+\d+\/\d+))?\s*?(-|(to))\s*?\d+((\.\d+)|(\s+\d+\/\d+))?/g; // for ex: "1 to 2" or "1 - 2"
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
 
@@ -65,7 +64,7 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
 
   // found a quantity range, for ex: "2 to 3"
   if (ingredientLine.match(numericRangeWithSpaceRegex)) {
-    const quantity = getFirstMatch(ingredientLine, numericRangeWithSpaceRegex).replace('to', '-').split(' ').join('');
+    const quantity = getFirstMatch(ingredientLine, numericRangeWithSpaceRegex).replace('to', '-').split(/\s*?-\s*?/).join('-');
     const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericRangeWithSpaceRegex), '').trim();
     return [ingredientLine.match(numericRangeWithSpaceRegex) && quantity, restOfIngredient];
   } else if (ingredientLine.match(numericAndFractionRegex)) {

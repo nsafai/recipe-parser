@@ -39,17 +39,24 @@ export function parse(recipeString: string) {
   For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
   let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
-  quantity = convert.convertFromFraction(quantity);
+  let minQty = quantity; // default to quantity
+  let maxQty = quantity; // default to quantity
 
-  /* when quantity includes an extra number we likely have a special unit type like 12 oz. can */
-  let extraUnitInfo = '';
-  if (quantity && quantity.split(' ').length > 1) {
-    const [amount, extra] = quantity.split(' ');
-    quantity = amount;
-    extraUnitInfo = extra;
+  // if quantity is non-nil and is a range, for ex: "1-2", we want to get minQty and maxQty
+  if (quantity && quantity.includes('-')) {
+    [minQty, maxQty] = quantity.split('-').map((it) => it.trim());
+    minQty = convert.convertFromFraction(minQty);
+    maxQty = convert.convertFromFraction(maxQty);
+  }
+  if (minQty !== maxQty) {
+    quantity = `${minQty}-${maxQty}`;
+  } else {
+    quantity = convert.convertFromFraction(minQty);
+    minQty = quantity;
+    maxQty = quantity;
   }
 
-  /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
+  /* extraInfo will be any info in parentheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
   let extraInfo;
   if (convert.getFirstMatch(restOfIngredient, /\(([^\)]+)\)/)) {
@@ -66,7 +73,8 @@ export function parse(recipeString: string) {
   /*This will take the number from the beginning and if the next word is a valid unit we will use that unit
   * if there is a number at the beginning we do not have a unit because the unit is assumed to be at the beginning*/
   const startsWithNumberRegex = /^\d+(\.\d+|\s+\d+\/\d+)?(\s+\w+\.?|\w+\.?\s+)/;
-  const numberWithNextWord = getFirstMatch(ingredient, startsWithNumberRegex).trim();
+  let extraUnitInfo = '';
+  const numberWithNextWord = convert.getFirstMatch(ingredient, startsWithNumberRegex).trim();
   if (numberWithNextWord.split(' ').length > 1) {
     const [tempUnit] = getUnit(numberWithNextWord.split(' ')[1]) as string[];
     if (tempUnit) {
@@ -76,21 +84,13 @@ export function parse(recipeString: string) {
     }
   } else {
     const numberOnlyRegex = /^\d+((\.\d+)|(\s+\d+\/\d+))?/;
-    const num = getFirstMatch(numberWithNextWord, numberOnlyRegex);
+    const num = convert.getFirstMatch(numberWithNextWord, numberOnlyRegex);
     const [tempUnit] = getUnit(numberWithNextWord.replace(num, ''));
     if (tempUnit) {
       unit = tempUnit;
       extraUnitInfo = num;
       ingredient = ingredient.replace(numberWithNextWord, '').trim();
     }
-  }
-
-  let minQty = quantity; // default to quantity
-  let maxQty = quantity; // default to quantity
-
-  // if quantity is non-nil and is a range, for ex: "1-2", we want to get minQty and maxQty
-  if (quantity && quantity.includes('-')) {
-    [minQty, maxQty] = quantity.split('-');
   }
 
   return {
@@ -100,11 +100,6 @@ export function parse(recipeString: string) {
     minQty,
     maxQty,
   };
-}
-
-function getFirstMatch(line: string, regex: RegExp) {
-  const match = line.match(regex);
-  return (match && match[0]) || '';
 }
 
 export function combine(ingredientArray: Ingredient[]) {
