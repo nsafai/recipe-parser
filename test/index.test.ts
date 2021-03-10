@@ -301,10 +301,10 @@ describe('recipe parser eng', () => {
 
   describe('translates the ingredient of', () => {
     it('"1 teaspoon water"', () => {
-      expect(parse('1 teaspoon water', 'eng').ingredient).to.equal('water');
+      expect(parse('1 teaspoon of water', 'eng').ingredient).to.equal('water');
     });
-    it('"1 teaspoon milk"', () => {
-      expect(parse('1 teaspoon milk', 'eng').ingredient).to.equal('milk');
+    it('"1 teaspoon  milk"', () => {
+      expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
     });
   });
 });
@@ -471,7 +471,7 @@ describe('recipe parser ita', () => {
         maxQty: '2',
       });
     });
-    it('"parses ingredient with range: 1 - 2 petto di pollo"', () => {
+    it('"parses ingredient with range: 1 - 2  petto di pollo"', () => {
       expect(parse('1 - 2 petto di pollo', 'eng')).to.deep.equal({
         unit: null,
         quantity: '1-2',
@@ -604,10 +604,10 @@ describe('recipe parser ita', () => {
 
   describe('translates the ingredient of', () => {
     it('"1 cucchiaio acqua"', () => {
-      expect(parse('1 cucchiaio acqua', 'ita').ingredient).to.equal('acqua');
+      expect(parse('1 cucchiaio d\'acqua', 'ita').ingredient).to.equal('acqua');
     });
     it('"1 cucchiaio latte"', () => {
-      expect(parse('1 cucchiaio latte', 'ita').ingredient).to.equal('latte');
+      expect(parse('1 cucchiaio di latte', 'ita').ingredient).to.equal('latte');
     });
   });
 });

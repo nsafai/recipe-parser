@@ -35,6 +35,19 @@ function getUnit(input: string, language: string) {
   return [];
 }
 
+function getPreposition(input: string, language: string) {
+  let preposition = unitsMap.get(language)
+  let prepositions = preposition[2];
+  for (const preposition of prepositions) {
+      let regex = new RegExp('^' + preposition )
+      if (convert.getFirstMatch(input, regex)) 
+        return preposition;
+      
+  }
+ 
+  return null;
+}
+
 export function parse(recipeString: string, language: string) {
   const ingredientLine = recipeString.trim(); // removes leading and trailing whitespace
 
@@ -55,8 +68,14 @@ export function parse(recipeString: string, language: string) {
   // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
   const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0], language) as string[]
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
-  const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
+  let ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
 
+  let preposition = getPreposition(ingredient.split(' ')[0], language)
+  if(preposition) {
+    let regex = new RegExp('^' + preposition )
+    ingredient = ingredient.replace(regex,'').trim()
+  }
+  
   let minQty = quantity; // default to quantity
   let maxQty = quantity; // default to quantity
 

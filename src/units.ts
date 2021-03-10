@@ -44,6 +44,9 @@ export const engPluralUnits = {
   piece: 'pieces'
 } as { [key: string]: string };
 
+export const engPreposition = ['of'];
+
+
 export const itaUnits = {
   tazza: [ 'Tazza', 'tazzina', 'Tazzina','tazzine'],
   gallone: ['gal', 'Gallone'],
@@ -97,7 +100,9 @@ export const itaPluralUnits = {
   vasetto: 'vasetto'
 } as { [key: string]: string };
 
+export const itaPreposition = ['di','d\''];
+
 export const  unitsMap = new Map();
-unitsMap.set("eng",[engUnits,  engPluralUnits]);
-unitsMap.set("ita",[itaUnits,  itaPluralUnits]);
+unitsMap.set("eng",[engUnits,  engPluralUnits, engPreposition]);
+unitsMap.set("ita",[itaUnits,  itaPluralUnits, itaPreposition]);
 
