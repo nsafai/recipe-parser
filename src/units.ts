@@ -1,4 +1,4 @@
-export const units = {
+export const engUnits = {
   cup: ['c', 'c.', 'C', 'Cups'],
   gallon: ['gal'],
   ounce: ['oz', 'oz.'],
@@ -21,7 +21,7 @@ export const units = {
   large: ['large', 'Large'],
 } as { [key: string]: string[] };
 
-export const pluralUnits = {
+export const engPluralUnits = {
   cup: 'cups',
   gallon: 'gallons',
   ounce: 'ounces',
@@ -43,3 +43,61 @@ export const pluralUnits = {
   slice: 'slices',
   piece: 'pieces'
 } as { [key: string]: string };
+
+export const itaUnits = {
+  tazza: [ 'Tazza', 'tazzina', 'Tazzina','tazzine'],
+  gallone: ['gal', 'Gallone'],
+  oncia: ['oz', 'oz.', 'Oncia','once'],
+  pinta: ['pt', 'pts', 'pt.', 'Pinta'],
+  libbra: ['lb', 'lb.', 'lbs', 'lbs.', 'Lb', 'Lbs', 'Libbra'],
+  quarto: ['qt', 'qt.', 'qts', 'qts.', "Quarto"],
+  cucchiaio: ['Cucchiaio', 'Cucchiai'],
+  cucchiaino: ['Cucchiaino', 'Cucchiaini','cucchiaini'],
+  grammo: ['g', 'g.', 'Grammo'],
+  chilogrammo: ['kg', 'kg.', 'Kg', 'Kg.', 'Chilogrammo', 'chilogrammi', 'Chilogrammi'],
+  litro: ['l', 'l.', 'L', 'L.', 'Litro'],
+  milligrammo: ['mg', 'mg.', 'Milligrammo'],
+  millilitro: ['ml', 'ml.', 'mL', 'mL.', 'Millilitro'],
+  panetto: ['Panetto'],
+  foglia: ['Foglia'],
+  mazzetto: ['Mazzetto'],
+  vasetto: ['Vasetto'],
+  pacco: ['pkg', 'pkgs', 'pacchetto','Pacchetto','Pacco'],
+  pezzo: ['pcs', 'pcs.'],
+  pizzico: ['Pizzico'],
+  piccolo: ['Piccolo'],
+  medio: ['Medio'],
+  grande: ['Grande'],
+} as { [key: string]: string[] };
+
+export const itaPluralUnits = {
+  tazza: 'tazze',
+  gallone: 'galloni',
+  oncia: 'oncie',
+  pinta: 'pinte',
+  libbra: 'libbre',
+  quarto: 'quarti',
+  cucchiaio: 'cucchiai',
+  cucchiaino: 'cucchiaini',
+  grammo: 'grammi',
+  chilogrammo: 'chilogrammo',
+  litro: 'litri',
+  milligrammo: 'milligrammi',
+  millilitro: 'millilitri',
+  spicchio: 'spicchi',
+  bustina: 'bustine',
+  scatola: 'scatole',
+  pizzico: 'pizzichi',
+  lattina: 'lattine',
+  fetta: 'fette',
+  pezzo: 'pezzi',
+  panetto: 'panetti',
+  foglia: 'foglie',
+  mazzetto: 'mazzetti',
+  vasetto: 'vasetto'
+} as { [key: string]: string };
+
+export const  unitsMap = new Map();
+unitsMap.set("eng",[engUnits,  engPluralUnits]);
+unitsMap.set("ita",[itaUnits,  itaPluralUnits]);
+

@@ -1,5 +1,5 @@
 import * as convert from './convert';
-import { units, pluralUnits } from './units';
+import { unitsMap} from './units';
 import { repeatingFractions } from './repeatingFractions';
 import * as Natural from 'natural';
 
@@ -13,7 +13,10 @@ export interface Ingredient {
   maxQty: string | null;
 }
 
-function getUnit(input: string) {
+function getUnit(input: string, language: string) {
+  let unit = unitsMap.get(language)
+  let units = unit[0];
+  let pluralUnits = unit[1];
   if (units[input] || pluralUnits[input]) {
     return [input];
   }
@@ -32,7 +35,7 @@ function getUnit(input: string) {
   return [];
 }
 
-export function parse(recipeString: string) {
+export function parse(recipeString: string, language: string) {
   const ingredientLine = recipeString.trim(); // removes leading and trailing whitespace
 
   /* restOfIngredient represents rest of ingredient line.
@@ -50,7 +53,7 @@ export function parse(recipeString: string) {
   }
 
   // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
-  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[]
+  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0], language) as string[]
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
   const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
 
