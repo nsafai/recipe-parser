@@ -35,9 +35,11 @@ function getUnit(input: string, language: string) {
   return [];
 }
 
+/* return the proposition if it's used before of the name of
+the ingredient */
 function getPreposition(input: string, language: string) {
-  let preposition = unitsMap.get(language)
-  let prepositions = preposition[2];
+  let prepositionMap = unitsMap.get(language)
+  let prepositions = prepositionMap[2];
   for (const preposition of prepositions) {
       let regex = new RegExp('^' + preposition )
       if (convert.getFirstMatch(input, regex)) 

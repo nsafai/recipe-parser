@@ -6,7 +6,7 @@ describe('recipe parser eng', () => {
     expect(typeof parse('1 cup water', 'eng')).to.equal('object');
   });
 
-  describe('translates the quantity', () => {
+  describe('translates the quantity', () => { 
     it('of "1 teaspoon water"', () => {
       expect(parse('1 teaspoon water', 'eng').quantity).to.equal('1');
     });
@@ -306,6 +306,12 @@ describe('recipe parser eng', () => {
     it('"1 teaspoon  milk"', () => {
       expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
     });
+    it('"1 teaspoon  of milk"', () => {
+      expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
+    });
+    it('"1 teaspoon  of milk"', () => {
+      expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
+    });
   });
 });
 
@@ -498,11 +504,20 @@ describe('recipe parser ita', () => {
         maxQty: '1',
       });
     });
-    it('"1 fetta formaggio"', () => {
-      expect(parse('1 fetta formaggio', 'ita')).to.deep.equal({
+    it('"1 fetta di formaggio"', () => {
+      expect(parse('1 fetta di formaggio', 'ita')).to.deep.equal({
         unit: 'fetta',
         quantity: '1',
         ingredient: 'formaggio',
+        minQty: '1',
+        maxQty: '1',
+      });
+    });
+    it('"1 spicchio d\'aglio"', () => {
+      expect(parse('1 spicchio d\'aglio', 'ita')).to.deep.equal({
+        unit: 'spicchio',
+        quantity: '1',
+        ingredient: 'aglio',
         minQty: '1',
         maxQty: '1',
       });
@@ -603,11 +618,20 @@ describe('recipe parser ita', () => {
   });
 
   describe('translates the ingredient of', () => {
-    it('"1 cucchiaio acqua"', () => {
+    it('"1 cucchiaio d\'acqua"', () => {
       expect(parse('1 cucchiaio d\'acqua', 'ita').ingredient).to.equal('acqua');
     });
-    it('"1 cucchiaio latte"', () => {
+    it('"1 spicchio d\'aglio"', () => {
+      expect(parse('1 cucchiaio d\'acqua', 'ita').ingredient).to.equal('acqua');
+    });
+    it('"1 cucchiaio di latte"', () => {
       expect(parse('1 cucchiaio di latte', 'ita').ingredient).to.equal('latte');
+    });
+    it('"1 cucchiaio acqua"', () => {
+      expect(parse('1 cucchiaio acqua', 'ita').ingredient).to.equal('acqua');
+    });
+    it('"1 cucchiaio latte"', () => {
+      expect(parse('1 cucchiaio latte', 'ita').ingredient).to.equal('latte');
     });
   });
 });
