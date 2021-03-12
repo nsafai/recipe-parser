@@ -66,7 +66,11 @@ export function parse(recipeString: string) {
 
   // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
   // tslint:disable-next-line:prefer-const
-  let [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[];
+  let unit;
+  let originalUnit;
+  const retrievedUnit = getUnit(restOfIngredient.split(' ')[0]) as string[];
+  unit = retrievedUnit[0];
+  originalUnit = retrievedUnit[1];
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
   let ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
 
@@ -78,18 +82,17 @@ export function parse(recipeString: string) {
   if (numberWithNextWord.split(' ').length > 1) {
     const [tempUnit] = getUnit(numberWithNextWord.split(' ')[1]) as string[];
     if (tempUnit) {
-      unit = tempUnit;
+      unit = null;
       extraUnitInfo = numberWithNextWord.split(' ')[0];
-      ingredient = ingredient.replace(numberWithNextWord, '').trim();
+      ingredient = `${extraUnitInfo.trim()} ${tempUnit.trim()} ${ingredient.replace(numberWithNextWord, '').trim()}`;
     }
   } else {
     const numberOnlyRegex = /^\d+((\.\d+)|(\s+\d+\/\d+))?/;
     const num = convert.getFirstMatch(numberWithNextWord, numberOnlyRegex);
     const [tempUnit] = getUnit(numberWithNextWord.replace(num, ''));
     if (tempUnit) {
-      unit = tempUnit;
-      extraUnitInfo = num;
-      ingredient = ingredient.replace(numberWithNextWord, '').trim();
+      unit = null;
+      ingredient = `${num.trim()} ${tempUnit.trim()} ${ingredient.replace(numberWithNextWord, '').trim()}`;
     }
   }
 
