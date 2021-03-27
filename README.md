@@ -1,4 +1,4 @@
-# recipe-ingredient-parser-v2
+# recipe-ingredient-parser-v3
 
 Natural language parser for recipes and lists of ingredients. Can parse a string into an object and also combine an array of these ingredient objects.
 
