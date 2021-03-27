@@ -22,6 +22,9 @@ What's different from the original?
 
 And then use on a string, for example:
 `parse('1 teaspoon basil', 'eng');`
+or 
+`parse('1 grammo di zucchero', 'ita');`
+
 
 Will return an object:
 
@@ -66,7 +69,7 @@ Will return
 }]
 ```
 
-### To install
+### Languages supported
 
 Languages currently supported:
 
