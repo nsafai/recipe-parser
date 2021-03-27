@@ -1,3 +1,5 @@
+import { numbersMap} from './numbers';
+
 export function convertFromFraction(value: string) {
   // number comes in, for example: 1 1/3
   if (value && value.split(' ').length > 1) {
@@ -40,12 +42,45 @@ const unicodeObj: { [key: string]: string } = {
   '⅒': '1/10'
 };
 
-export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
+export function text2num(s: string, language: string) {
+  const a = s.toString().split(/[\s-]+/);
+  let values: number[]=[0,0];
+  a.forEach(x =>{
+    values = feach(x, values[0], values[1], language)
+  });
+  return values[0] + values[1];
+}
+
+export function feach(w: string, g: number, n: number, language: string) {
+  let number = numbersMap.get(language)
+  let small = number[0]
+  let magnitude = number[1]
+  var x = small[w];
+  if (x != null) {
+      g = g + x;
+  }
+  else if (w == "hundred") {
+      g = g * 100;
+  }
+  else {
+      x = magnitude[w];
+      if (x != null) {
+          n = n + g * x
+          g = 0;
+      }
+      else { 
+          alert("Unknown number: "+w); 
+      }
+  }
+  return [g,n]
+}
+
+export function findQuantityAndConvertIfUnicode(ingredientLine: string, language: string) {
   const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+.\d+)|\d+/g;
   const numericRangeWithSpaceRegex = /^(\d+\-\d+)|^(\d+\s\-\s\d+)|^(\d+\sto\s\d+)/g; // for ex: "1 to 2" or "1 - 2"
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
-
+  const wordUntilSpace = /[^\s]+/g;
   // found a unicode quantity inside our regex, for ex: '⅝'
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
@@ -65,10 +100,17 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   }
 
   // found a numeric/fraction quantity, for example: "1 1/3"
-  else if (ingredientLine.match(numericAndFractionRegex)) {
+  if (ingredientLine.match(numericAndFractionRegex)) {
     const quantity = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()
     return [ingredientLine.match(numericAndFractionRegex) && quantity, restOfIngredient];
+  }
+
+  else if(ingredientLine.match(wordUntilSpace)) {
+    const quantity = getFirstMatch(ingredientLine, wordUntilSpace);
+    const quantityNumber = text2num(quantity.toLowerCase(), language)
+    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, wordUntilSpace), '').trim()
+    return [ingredientLine.match(wordUntilSpace) && quantityNumber + '', restOfIngredient];
   }
 
   // no parse-able quantity found

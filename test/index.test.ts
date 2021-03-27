@@ -29,6 +29,18 @@ describe('recipe parser eng', () => {
       expect(parse('about 1/2 teaspoon water', 'eng').quantity).to.equal('0.5');
     });
 
+    describe('translates the quantity from string to number', () => {
+      it('one teaspoon water"', () => {
+        expect(parse('one teaspoon water', 'eng').quantity).to.equal('1');
+      });
+      it('twenty-one teaspoon water"', () => {
+        expect(parse('twenty-one teaspoon water', 'eng').quantity).to.equal('21');
+      });
+      it('five teaspoon water"', () => {
+        expect(parse('five teaspoon water', 'eng').quantity).to.equal('5');
+      });
+    });
+
     describe('translates the quantity range', () => {
       it('of "10-20 teaspoon water"', () => {
         expect(parse('10-20 teaspoon water', 'eng').quantity).to.equal('10-20');
@@ -210,9 +222,9 @@ describe('recipe parser eng', () => {
   });
 
   it('doesn\'t explode when no unit and no quantity provided', () => {
-    expect(parse('powdered sugar', 'eng')).to.deep.equal({
+    expect(parse('sugar', 'eng').ingredient).to.deep.equal({
       unit: null,
-      ingredient: 'powdered sugar',
+      ingredient: 'sugar',
       quantity: null,
       minQty: null,
       maxQty: null,
@@ -310,7 +322,7 @@ describe('recipe parser eng', () => {
       expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
     });
     it('"1 teaspoon  of milk"', () => {
-      expect(parse('1 teaspoon of milk', 'eng').ingredient).to.equal('milk');
+      expect(parse('1 teaspoon of powdered sugar', 'eng').ingredient).to.equal('powdered sugar');
     });
   });
 });
@@ -345,6 +357,30 @@ describe('recipe parser ita', () => {
       expect(parse('about 1/2 cucchiao acqua', 'ita').quantity).to.equal('0.5');
     });
 
+    describe('translates the quantity from string to number', () => {
+      it('Un cucchiaio d\'acqua', () => {
+        expect(parse('Un cucchiaio d\'acqua', 'ita').quantity).to.equal('1');
+      });
+      it('Uno cucchiaio d\'acqua', () => {
+        expect(parse('Uno cucchiaio d\'acqua', 'ita').quantity).to.equal('1');
+      });
+      it('mezzo cucchiaio d\'acqua', () => {
+        expect(parse('mezzo cucchiaio d\'acqua', 'ita').quantity).to.equal('0.5');
+      });
+      it('meta cucchiaio d\'acqua', () => {
+        expect(parse('meta cucchiaio d\'acqua', 'ita').quantity).to.equal('0.5');
+      });
+      it('Venti cucchiai d\'acqua"', () => {
+        expect(parse('Venti cucchiai d\'acqua', 'ita').quantity).to.equal('20');
+      });
+      it('cinque cucchiai d\'acqua"', () => {
+        expect(parse('cinque cucchiai d\'acqua', 'ita').quantity).to.equal('5');
+      });
+      it('ventuno cucchiai d\'acqua"', () => {
+        expect(parse('ventuno cucchiai d\'acqua', 'ita').quantity).to.equal('21');
+      });
+    });
+
     describe('translates the quantity range', () => {
       it('of "10-20 cucchiao acqua"', () => {
         expect(parse('10-20 cucchiao acqua', 'ita').quantity).to.equal('10-20');
@@ -356,6 +392,7 @@ describe('recipe parser ita', () => {
         expect(parse('10 to 20 cucchiao acqua', 'ita').quantity).to.equal('10-20');
       });
     });
+
 
     describe('of unicode fractions', () => {
       const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];

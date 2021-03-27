@@ -55,7 +55,7 @@ export function parse(recipeString: string, language: string) {
 
   /* restOfIngredient represents rest of ingredient line.
   For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
-  let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+  let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine, language) as string[];
 
   quantity = convert.convertFromFraction(quantity);
 
