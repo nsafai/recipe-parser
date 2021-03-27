@@ -222,12 +222,12 @@ describe('recipe parser eng', () => {
   });
 
   it('doesn\'t explode when no unit and no quantity provided', () => {
-    expect(parse('sugar', 'eng').ingredient).to.deep.equal({
-      unit: null,
-      ingredient: 'sugar',
-      quantity: null,
-      minQty: null,
-      maxQty: null,
+    expect(parse('Powdered Sugar', 'eng')).to.deep.equal({
+        ingredient: 'Powdered Sugar',
+        quantity: null,
+        unit: null,
+        minQty: null,
+        maxQty: null,
     });
   });
 

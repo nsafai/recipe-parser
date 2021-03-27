@@ -48,7 +48,10 @@ export function text2num(s: string, language: string) {
   a.forEach(x =>{
     values = feach(x, values[0], values[1], language)
   });
-  return values[0] + values[1];
+  if(values[0] + values[1]<0)
+    return null
+  else 
+    return values[0] + values[1];
 }
 
 export function feach(w: string, g: number, n: number, language: string) {
@@ -68,9 +71,9 @@ export function feach(w: string, g: number, n: number, language: string) {
           n = n + g * x
           g = 0;
       }
-      else { 
-          alert("Unknown number: "+w); 
-      }
+      else 
+          return [-1, -1]
+      
   }
   return [g,n]
 }
@@ -109,8 +112,13 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string, language
   else if(ingredientLine.match(wordUntilSpace)) {
     const quantity = getFirstMatch(ingredientLine, wordUntilSpace);
     const quantityNumber = text2num(quantity.toLowerCase(), language)
-    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, wordUntilSpace), '').trim()
-    return [ingredientLine.match(wordUntilSpace) && quantityNumber + '', restOfIngredient];
+    if(quantityNumber){
+      const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, wordUntilSpace), '').trim()
+      return [ingredientLine.match(wordUntilSpace) && quantityNumber + '', restOfIngredient];
+    }
+    else
+      return [null, ingredientLine];
+    
   }
 
   // no parse-able quantity found
