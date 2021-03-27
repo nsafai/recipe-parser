@@ -56,7 +56,7 @@ export const itaUnits = {
   quarto: ['qt', 'qt.', 'qts', 'qts.', "Quarto"],
   cucchiaio: ['Cucchiaio', 'Cucchiai'],
   cucchiaino: ['Cucchiaino', 'Cucchiaini','cucchiaini'],
-  grammo: ['g', 'g.', 'Grammo'],
+  grammo: ['g', 'g.', 'gr','Grammo'],
   chilogrammo: ['kg', 'kg.', 'Kg', 'Kg.', 'Chilogrammo', 'chilogrammi', 'Chilogrammi'],
   litro: ['l', 'l.', 'L', 'L.', 'Litro'],
   milligrammo: ['mg', 'mg.', 'Milligrammo'],
