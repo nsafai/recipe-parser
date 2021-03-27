@@ -1,5 +1,5 @@
 {
-  "name": "recipe-ingredient-parser-v2",
+  "name": "recipe-ingredient-parser-v3",
   "version": "1.1.1",
   "description": "Natural language parser for recipes and ingredient lists, incl. combining ingredients",
   "main": "lib/index.js",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nsafai/recipe-parser.git"
+    "url": "git+https://github.com/suprmat95/recipe-parser/"
   },
-  "author": "Nicolai Safai <me@nicolaisafai.com>",
+  "author": "Matteo D'Ospina <matteodospina@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nsafai/recipe-parser/issues"
+    "url": "https://github.com/suprmat95/recipe-parser/issues"
   },
-  "homepage": "https://github.com/nsafai/recipe-parser#readme",
+  "homepage": "https://github.com/suprmat95/recipe-parser#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.4",

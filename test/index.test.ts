@@ -379,6 +379,9 @@ describe('recipe parser ita', () => {
       it('ventuno cucchiai d\'acqua"', () => {
         expect(parse('ventuno cucchiai d\'acqua', 'ita').quantity).to.equal('21');
       });
+      it('mezzo spicchio d\'aglio"', () => {
+        expect(parse('mezzo spicchio d\'aglio', 'ita').quantity).to.equal('0.5');
+      });
     });
 
     describe('translates the quantity range', () => {
