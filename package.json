@@ -1,6 +1,6 @@
 {
   "name": "recipe-ingredient-parser-v3",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Natural language parser for recipes and ingredient lists, incl. combining ingredients",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
