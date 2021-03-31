@@ -30,6 +30,7 @@ export const engSmall: { [key: string]: number } = {
   };
   
   export const engMagnitude: { [key: string]: number } = {
+    'hundred':      100,
     'thousand':     1000,
     'million':      1000000,
     'billion':      1000000000,
@@ -42,6 +43,7 @@ export const engSmall: { [key: string]: number } = {
     'metà': 0.5,
     'meta': 0.5,
     'uno': 1,
+    'una': 1,
     'un': 1,
     'due': 2,
     'tre': 3,
@@ -54,6 +56,7 @@ export const engSmall: { [key: string]: number } = {
     'dieci': 10,
     'undici': 11,
     'dodici': 12,
+    'dozzina': 12,
     'tredici': 13,
     'quattordici': 14,
     'quindici': 15,
@@ -76,17 +79,22 @@ export const engSmall: { [key: string]: number } = {
     'ottanta': 80,
     'ottantuno': 81,
     'novanta': 90,
-    'novantuno': 90
+    'novantuno': 91
 
   };
   
   export const itaMagnitude: { [key: string]: number } = {
+    'cento': 100,
     'mille':     1000,
+    'mila':     1000,
     'millione':      1000000,
     'milliardo':      1000000000,
     'trilliardo':     1000000000000,
   };
-
+  export const toTasteMap: {[key:string]: string } = {
+    'eng': 'to taste',
+    'ita': 'quanto basta',
+  };
 export const  numbersMap = new Map();
 numbersMap.set("eng",[engSmall,  engMagnitude]);
 numbersMap.set("ita",[itaSmall,  itaMagnitude]);

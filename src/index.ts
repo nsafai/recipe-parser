@@ -1,9 +1,9 @@
 import * as convert from './convert';
 import { unitsMap} from './units';
 import { repeatingFractions } from './repeatingFractions';
-import * as Natural from 'natural';
+//import * as Natural from 'natural';
 
-const nounInflector = new Natural.NounInflector();
+//const nounInflector = new Natural.NounInflector();
 
 export interface Ingredient {
   ingredient: string;
@@ -139,9 +139,9 @@ export function prettyPrintingPress(ingredient: Ingredient) {
 
       quantity += quantity ? ' ' + fractional : fractional;
     }
-    if (((+whole !== 0 && typeof remainder !== 'undefined') || +whole > 1) && unit) {
+   /* if (((+whole !== 0 && typeof remainder !== 'undefined') || +whole > 1) && unit) {
       unit = nounInflector.pluralize(unit);
-    }
+    }*/
   } else {
     return ingredient.ingredient;
   }

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parse, combine, prettyPrintingPress } from '../src/index';
+import { parse, combine } from '../src/index';
 
 describe('recipe parser eng', () => {
   it('returns an object', () => {
@@ -7,6 +7,21 @@ describe('recipe parser eng', () => {
   });
 
   describe('translates the quantity', () => { 
+    it('of "t.t. teaspoon water"', () => {
+      expect(parse('t.t. teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
+    it('of "t.t. teaspoon water"', () => {
+      expect(parse('t.t. teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
+    it('of "TT teaspoon water"', () => {
+      expect(parse('TT teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
+    it('of "TT. teaspoon water"', () => {
+      expect(parse('TT. teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
+    it('of "T.t teaspoon water"', () => {
+      expect(parse('T.t teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
     it('of "1 teaspoon water"', () => {
       expect(parse('1 teaspoon water', 'eng').quantity).to.equal('1');
     });
@@ -335,6 +350,21 @@ describe('recipe parser ita', () => {
   });
 
   describe('translates the quantity', () => {
+    it('of "q.b. cucchiao acqua"', () => {
+      expect(parse('q.b. cucchiao acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "Q.B. cucchiao acqua"', () => {
+      expect(parse('Q.B. cucchiao acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "QB cucchiao acqua"', () => {
+      expect(parse('QB cucchiao acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "QB. cucchiao acqua"', () => {
+      expect(parse('QB. cucchiao acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "Q.B cucchiao acqua"', () => {
+      expect(parse('Q.b cucchiao acqua', 'ita').quantity).to.equal('q.b.');
+    });
     it('of "1 cucchiao acqua"', () => {
       expect(parse('1 cucchiao acqua', 'ita').quantity).to.equal('1');
     });
@@ -361,8 +391,8 @@ describe('recipe parser ita', () => {
       it('Un cucchiaio d\'acqua', () => {
         expect(parse('Un cucchiaio d\'acqua', 'ita').quantity).to.equal('1');
       });
-      it('Uno cucchiaio d\'acqua', () => {
-        expect(parse('Uno cucchiaio d\'acqua', 'ita').quantity).to.equal('1');
+      it('Un cucchiaio d\'acqua', () => {
+        expect(parse('Un cucchiaio d\'acqua', 'ita').quantity).to.equal('1');
       });
       it('mezzo cucchiaio d\'acqua', () => {
         expect(parse('mezzo cucchiaio d\'acqua', 'ita').quantity).to.equal('0.5');
@@ -381,6 +411,18 @@ describe('recipe parser ita', () => {
       });
       it('mezzo spicchio d\'aglio"', () => {
         expect(parse('mezzo spicchio d\'aglio', 'ita').quantity).to.equal('0.5');
+      });
+      it('cento grammi d\'aglio"', () => {
+        expect(parse('cento grammi d\'aglio', 'ita').quantity).to.equal('100');
+      });
+      it('cento-due grammi d\'aglio"', () => {
+        expect(parse('cento-due grammi d\'aglio', 'ita').quantity).to.equal('102');
+      });
+      it('due-cento grammi d\'aglio"', () => {
+        expect(parse('due-cento grammi d\'aglio', 'ita').quantity).to.equal('200');
+      });
+      it('due-mila grammi d\'aglio"', () => {
+        expect(parse('due-mila grammi d\'aglio', 'ita').quantity).to.equal('2000');
       });
     });
 
@@ -436,20 +478,20 @@ describe('recipe parser ita', () => {
     it('of "1 tazza acqua"', () => {
       expect(parse('1 tazza acqua', 'ita').unit).to.equal('tazza');
     });
-    it('of "1 gallone acqua"', () => {
-      expect(parse('1 gallone acqua', 'ita').unit).to.equal('gallone');
+    it('of "1 litro acqua"', () => {
+      expect(parse('1 litro acqua', 'ita').unit).to.equal('litro');
     });
-    it('of "1 oncia acqua"', () => {
-      expect(parse('1 oncia acqua', 'ita').unit).to.equal('oncia');
+    it('of "1 lt acqua"', () => {
+      expect(parse('1 lt acqua', 'ita').unit).to.equal('litro');
     });
-    it('of "1 pinta acqua"', () => {
-      expect(parse('1 pinta acqua', 'ita').unit).to.equal('pinta');
+    it('of "1 kg acqua"', () => {
+      expect(parse('1 kg acqua', 'ita').unit).to.equal('chilogrammo');
     });
-    it('of "1 libbra acqua"', () => {
-      expect(parse('1 libbra acqua', 'ita').unit).to.equal('libbra');
+    it('of "1 L acqua"', () => {
+      expect(parse('1 L acqua', 'ita').unit).to.equal('litro');
     });
-    it('of "1 quarto acqua"', () => {
-      expect(parse('1 quarto acqua', 'ita').unit).to.equal('quarto');
+    it('of "1 L. acqua"', () => {
+      expect(parse('1 L. acqua', 'ita').unit).to.equal('litro');
     });
     it('of "1 cucchiaio acqua"', () => {
       expect(parse('1 cucchiaio acqua', 'ita').unit).to.equal('cucchiaio');
@@ -472,8 +514,8 @@ describe('recipe parser ita', () => {
     it('of "1 millilitro acqua"', () => {
       expect(parse('1 millilitro acqua', 'ita').unit).to.equal('millilitro');
     });
-    it('of "1 grande cipolla"', () => {
-      expect(parse('1 grande cipolla', 'ita').unit).to.equal("grande");
+    it('of "1 l cipolla"', () => {
+      expect(parse('1 l cipolla', 'ita').unit).to.equal("litro");
     });
     it('of "1 cipolla intera"', () => {
       expect(parse('1 cipolla intera', 'ita').unit).to.equal(null);
@@ -590,31 +632,31 @@ describe('recipe parser ita', () => {
       expect(parse('2 tazzine acqua', 'ita').unit).to.equal('tazza');
       expect(parse('2 tazze acqua', 'ita').unit).to.equal('tazza');
     });
-    it('"1 gallone acqua"', () => {
-      expect(parse('1 gal acqua', 'ita').unit).to.equal('gallone');
-      expect(parse('1 galloni acqua', 'ita').unit).to.equal('gallone');
+    it('"1 litro acqua"', () => {
+      expect(parse('1 l acqua', 'ita').unit).to.equal('litro');
+      expect(parse('1 litri acqua', 'ita').unit).to.equal('litro');
     });
-    it('"1 oncia acqua"', () => {
-      expect(parse('1 oncia acqua', 'ita').unit).to.equal('oncia');
-      expect(parse('2 once acqua', 'ita').unit).to.equal('oncia');
+    it('"1 grammo acqua"', () => {
+      expect(parse('1 gr acqua', 'ita').unit).to.equal('grammo');
+      expect(parse('2 g acqua', 'ita').unit).to.equal('grammo');
     });
-    it('"1 pinta acqua"', () => {
-      expect(parse('1 pt acqua', 'ita').unit).to.equal('pinta');
-      expect(parse('2 pts acqua', 'ita').unit).to.equal('pinta');
-      expect(parse('1 pt. acqua', 'ita').unit).to.equal('pinta');
-      expect(parse('2 pinte acqua', 'ita').unit).to.equal('pinta');
+    it('"1 chilogrammo acqua"', () => {
+      expect(parse('1 kg acqua', 'ita').unit).to.equal('chilogrammo');
+      expect(parse('2 KG acqua', 'ita').unit).to.equal('chilogrammo');
+      expect(parse('1 kilogrammo acqua', 'ita').unit).to.equal('chilogrammo');
+      expect(parse('2 Kilogrammo acqua', 'ita').unit).to.equal('chilogrammo');
     });
-    it('"1 libbra acqua"', () => {
-      expect(parse('1 lb acqua', 'ita').unit).to.equal('libbra');
-      expect(parse('1 lb. acqua', 'ita').unit).to.equal('libbra');
-      expect(parse('2 lbs acqua', 'ita').unit).to.equal('libbra');
-      expect(parse('2 libbre acqua', 'ita').unit).to.equal('libbra');
+    it('"1 tazza acqua"', () => {
+      expect(parse('1 tazza acqua', 'ita').unit).to.equal('tazza');
+      expect(parse('1 tazzina acqua', 'ita').unit).to.equal('tazza');
+      expect(parse('2 tazzine acqua', 'ita').unit).to.equal('tazza');
+      expect(parse('2 Tazza acqua', 'ita').unit).to.equal('tazza');
     });
-    it('"1 quarto acqua"', () => {
-      expect(parse('1 qt acqua', 'ita').unit).to.equal('quarto');
-      expect(parse('1 qt. acqua', 'ita').unit).to.equal('quarto');
-      expect(parse('1 qts acqua', 'ita').unit).to.equal('quarto');
-      expect(parse('1 quarti acqua', 'ita').unit).to.equal('quarto');
+    it('"1 millilitro acqua"', () => {
+      expect(parse('1 ml acqua', 'ita').unit).to.equal('millilitro');
+      expect(parse('1 ml. acqua', 'ita').unit).to.equal('millilitro');
+      expect(parse('1 millilitro acqua', 'ita').unit).to.equal('millilitro');
+      expect(parse('1 Millilitro acqua', 'ita').unit).to.equal('millilitro');
     });
     it('"1 cucchiaio acqua"', () => {
       expect(parse('2 cucchiai acqua', 'ita').unit).to.equal('cucchiaio');
@@ -1040,7 +1082,7 @@ describe('combine ingredients', () => {
     ]);
   });
 });
-
+/*
 describe('pretty printing press', () => {
   const ingredients = [{
     ingredient: 'milk',
@@ -1134,4 +1176,4 @@ describe('pretty printing press', () => {
       expect(prettyPrintingPress(ingredients[i])).to.equal(expectedOutcome[i]);
     });
   }
-});
+});*/
