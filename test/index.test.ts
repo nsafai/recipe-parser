@@ -6,7 +6,13 @@ describe('recipe parser eng', () => {
     expect(typeof parse('1 cup water', 'eng')).to.equal('object');
   });
 
-  describe('translates the quantity', () => { 
+  describe('translates the quantity', () => {
+    it('of "to taste teaspoon water"', () => {
+      expect(parse('to taste teaspoon water', 'eng').quantity).to.equal('t.t.');
+    });
+    it('of "To taste teaspoon water"', () => {
+      expect(parse('To taste teaspoon water', 'eng').quantity).to.equal('t.t.');
+    }); 
     it('of "t.t. teaspoon water"', () => {
       expect(parse('t.t. teaspoon water', 'eng').quantity).to.equal('t.t.');
     });
@@ -350,6 +356,15 @@ describe('recipe parser ita', () => {
   });
 
   describe('translates the quantity', () => {
+    it('of "quanto basta cucchiao acqua"', () => {
+      expect(parse('quanto basta di acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "Quanto basta cucchiao acqua"', () => {
+      expect(parse('Quanto basta di acqua', 'ita').quantity).to.equal('q.b.');
+    });
+    it('of "Quanto Basta cucchiao acqua"', () => {
+      expect(parse('Quanto Basta di acqua', 'ita').quantity).to.equal('q.b.');
+    });
     it('of "q.b. cucchiao acqua"', () => {
       expect(parse('q.b. cucchiao acqua', 'ita').quantity).to.equal('q.b.');
     });

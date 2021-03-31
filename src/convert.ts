@@ -98,6 +98,8 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string, language
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
   const wordUntilSpace = /[^\s]+/g;
+  const wordToTaste = toTasteMap[language]
+  const regexToTaste= new RegExp(wordToTaste,'gi')
 
   // found a unicode quantity inside our regex, for ex: '⅝'
   if (ingredientLine.match(unicodeFractionRegex)) {
@@ -123,7 +125,15 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string, language
     const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()
     return [ingredientLine.match(numericAndFractionRegex) && quantity, restOfIngredient];
   }
-
+  if (ingredientLine.match(regexToTaste)) {
+    const toTaste = getFirstMatch(ingredientLine, regexToTaste);
+    const fistLetter = toTaste.match(/\b(\w)/g)
+    if(fistLetter){
+      const outPut = (fistLetter.join('.') +'.').toLocaleLowerCase()
+      const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, regexToTaste), '').trim()
+      return [ingredientLine.match(regexToTaste) && outPut, restOfIngredient];
+    }
+  }
   else if(ingredientLine.match(wordUntilSpace)) {
     const quantity = getFirstMatch(ingredientLine, wordUntilSpace);
     const quantityNumber = text2num(quantity.toLowerCase(), language)
